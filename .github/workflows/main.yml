@@ -1,0 +1,32 @@
+name: Create Rust Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Build release binary
+        run: cargo build --release
+
+      - name: Create GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Replace 'your_project_name' with the actual binary name from your Cargo.toml
+          gh release create ${{ github.ref_name }} \
+            ./target/release/sv \
+            --title "Release ${{ github.ref_name }}" \
+            --generate-notes
