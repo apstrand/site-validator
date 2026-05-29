@@ -1,0 +1,27 @@
+[package]
+name = "site-validator"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "sv"
+path = "src/main.rs"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "http2"] }
+html5ever = "0.27"
+markup5ever = "0.12"
+url = "2"
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+indicatif = "0.17"
+colored = "2"
+walkdir = "2"
+futures = "0.3"
+anyhow = "1"
+
+[profile.release]
+lto = true
+codegen-units = 1
